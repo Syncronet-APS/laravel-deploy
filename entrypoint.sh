@@ -41,16 +41,12 @@ rsync --progress -avzh \
 if [ $? -eq 0 ]
 then
 	echo $'\n' "------ SYNC SUCCESSFUL! -----------------------" $'\n'
-	echo $'\n' "------ RELOADING PERMISSION -------------------" $'\n'
 	
-	ssh -i /root/.ssh/id_rsa -t $SSH_USER@$SSH_HOST "sudo chown -R $OWNER:$OWNER $PATH_SOURCE"
-	ssh -i /root/.ssh/id_rsa -t $SSH_USER@$SSH_HOST "sudo chmod 775 -R $PATH_SOURCE"
-	ssh -i /root/.ssh/id_rsa -t $SSH_USER@$SSH_HOST "sudo chmod 777 -R $PATH_SOURCE/storage"
-	ssh -i /root/.ssh/id_rsa -t $SSH_USER@$SSH_HOST "sudo chmod 777 -R $PATH_SOURCE/public"
-	ssh -i /root/.ssh/id_rsa -t $SSH_USER@$SSH_HOST "php $PATH_SOURCE/artisan migrate"
+	ssh -i /root/.ssh/id_rsa -t $SSH_USER@$SSH_HOST "php $PATH_SOURCE/artisan migrate --force"
 	ssh -i /root/.ssh/id_rsa -t $SSH_USER@$SSH_HOST "php $PATH_SOURCE/artisan storage:link"
 	ssh -i /root/.ssh/id_rsa -t $SSH_USER@$SSH_HOST "php $PATH_SOURCE/artisan optimize"
-	ssh -i /root/.ssh/id_rsa -t $SSH_USER@$SSH_HOST "sudo systemctl octane restart"
+	ssh -i /root/.ssh/id_rsa -t $SSH_USER@$SSH_HOST "php $PATH_SOURCE/artisan octane:reload"
+	ssh -i /root/.ssh/id_rsa -t $SSH_USER@$SSH_HOST "php $PATH_SOURCE/artisan horizon:reload"
 
 	echo $'\n' "------ CONGRATS! DEPLOY SUCCESSFUL!!! ---------" $'\n'
 	exit 0

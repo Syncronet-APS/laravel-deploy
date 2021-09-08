@@ -42,11 +42,11 @@ if [ $? -eq 0 ]
 then
 	echo $'\n' "------ SYNC SUCCESSFUL! -----------------------" $'\n'
 	
-	ssh -i /root/.ssh/id_rsa -t $SSH_USER@$SSH_HOST "sudo -u www-data php $PATH_SOURCE/artisan migrate --force"
-	ssh -i /root/.ssh/id_rsa -t $SSH_USER@$SSH_HOST "sudo -u www-data php $PATH_SOURCE/artisan optimize"
-	ssh -i /root/.ssh/id_rsa -t $SSH_USER@$SSH_HOST "sudo -u www-data php $PATH_SOURCE/artisan octane:reload"
-	ssh -i /root/.ssh/id_rsa -t $SSH_USER@$SSH_HOST "php $PATH_SOURCE/artisan scout:import App\\Models\\Municipality"
-	ssh -i /root/.ssh/id_rsa -t $SSH_USER@$SSH_HOST "php $PATH_SOURCE/artisan scout:import App\\Models\\StoredEvent"
+	ssh -i /root/.ssh/id_rsa $SSH_USER@$SSH_HOST "sudo -u www-data php $PATH_SOURCE/artisan migrate --force"
+	ssh -i /root/.ssh/id_rsa $SSH_USER@$SSH_HOST "sudo -u www-data php $PATH_SOURCE/artisan optimize"
+	ssh -i /root/.ssh/id_rsa $SSH_USER@$SSH_HOST "sudo -u www-data php $PATH_SOURCE/artisan octane:reload"
+	ssh -i /root/.ssh/id_rsa $SSH_USER@$SSH_HOST "php $PATH_SOURCE/artisan scout:import App\\Models\\Municipality"
+	ssh -i /root/.ssh/id_rsa $SSH_USER@$SSH_HOST "php $PATH_SOURCE/artisan scout:import App\\Models\\StoredEvent"
 
 	echo $'\n' "------ CONGRATS! DEPLOY SUCCESSFUL!!! ---------" $'\n'
 	exit 0

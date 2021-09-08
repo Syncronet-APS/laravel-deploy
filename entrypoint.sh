@@ -41,12 +41,8 @@ rsync --progress -avzh \
 if [ $? -eq 0 ]
 then
 	echo $'\n' "------ SYNC SUCCESSFUL! -----------------------" $'\n'
-	
-	ssh -i /root/.ssh/id_rsa -tt $SSH_USER@$SSH_HOST "sudo -u www-data php $PATH_SOURCE/artisan migrate --force"
-	ssh -i /root/.ssh/id_rsa -tt $SSH_USER@$SSH_HOST "sudo -u www-data php $PATH_SOURCE/artisan optimize"
-	ssh -i /root/.ssh/id_rsa -tt $SSH_USER@$SSH_HOST "sudo -u www-data php $PATH_SOURCE/artisan octane:reload"
-	ssh -i /root/.ssh/id_rsa -tt $SSH_USER@$SSH_HOST "sudo -u www-data php $PATH_SOURCE/artisan scout:import App\\Models\\Municipality"
-	ssh -i /root/.ssh/id_rsa -tt $SSH_USER@$SSH_HOST "sudo -u www-data php $PATH_SOURCE/artisan scout:import App\\Models\\StoredEvent"
+
+	ssh -i /root/.ssh/id_rsa -t $SSH_USER@$SSH_HOST "chmod +x $PATH_SOURCE/bin/deploy.sh && $PATH_SOURCE/bin/deploy.sh"
 
 	echo $'\n' "------ CONGRATS! DEPLOY SUCCESSFUL!!! ---------" $'\n'
 	exit 0
